@@ -21,6 +21,7 @@ import * as React from 'react';
 import { ThemeContext } from 'react-fela';
 
 import {
+  createShorthand,
   createShorthandFactory,
   doesNodeContainClick,
   UIComponentProps,
@@ -260,6 +261,7 @@ const ToolbarItem = compose<'button', ToolbarItemProps, ToolbarItemStylesProps, 
     });
 
     const ElementType = getElementType(props);
+    const slotProps = composeOptions.resolveSlotProps<ToolbarItemProps>(props);
     const unhandledProps = useUnhandledProps(composeOptions.handledProps, props);
 
     const itemElement = (
@@ -289,7 +291,8 @@ const ToolbarItem = compose<'button', ToolbarItemProps, ToolbarItemStylesProps, 
             >
               <Popper align="start" position="above" targetRef={itemRef} {...getPopperPropsFromShorthand(menu)}>
                 <ToolbarVariablesProvider value={mergedVariables}>
-                  {ToolbarMenu.create(menu, {
+                  {createShorthand(composeOptions.slots.menu, menu, {
+                    defaultProps: () => slotProps.menu,
                     overrideProps: handleMenuOverrides(getRefs),
                   })}
                 </ToolbarVariablesProvider>
@@ -373,6 +376,9 @@ const ToolbarItem = compose<'button', ToolbarItemProps, ToolbarItemStylesProps, 
     className: toolbarItemClassName,
     displayName: 'ToolbarItem',
 
+    slots: {
+      menu: ToolbarMenu,
+    },
     handledProps: [
       'accessibility',
       'as',
