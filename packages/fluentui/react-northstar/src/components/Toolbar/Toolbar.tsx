@@ -438,15 +438,20 @@ const Toolbar = compose<'div', ToolbarProps, ToolbarStylesProps, {}, {}>(
           case 'group':
             return ToolbarRadioGroup.create(item);
           case 'toggle':
-            return ToolbarItem.create(item, {
-              defaultProps: () => ({ accessibility: toggleButtonBehavior }),
+            return createShorthand(composeOptions.slots.item, item, {
+              defaultProps: () => ({
+                accessibility: toggleButtonBehavior,
+                ...slotProps.item,
+              }),
             });
           case 'custom':
             return createShorthand(composeOptions.slots.customItem, item, {
               defaultProps: () => slotProps.customItem,
             });
           default:
-            return ToolbarItem.create(item);
+            return createShorthand(composeOptions.slots.item, item, {
+              defaultProps: () => slotProps.item,
+            });
         }
       });
 
@@ -535,6 +540,7 @@ const Toolbar = compose<'div', ToolbarProps, ToolbarStylesProps, {}, {}>(
     slots: {
       customItem: ToolbarCustomItem,
       divider: ToolbarDivider,
+      item: ToolbarItem,
     },
 
     handledProps: [

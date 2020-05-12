@@ -400,12 +400,13 @@ const ToolbarMenuItem = compose<'button', ToolbarMenuItemProps, ToolbarMenuItemS
                   {...getPopperPropsFromShorthand(menu)}
                 >
                   <ToolbarVariablesProvider value={mergedVariables}>
-                    {ToolbarMenu.create(menu, {
+                    {createShorthand(composeOptions.slots.menu || ToolbarMenu, menu, {
                       defaultProps: () => ({
                         className: toolbarMenuItemSlotClassNames.submenu,
                         styles: resolvedStyles.menu,
                         submenu: true,
                         submenuIndicator,
+                        ...slotProps.menu,
                       }),
                       overrideProps: handleMenuOverrides,
                     })}
@@ -447,6 +448,7 @@ const ToolbarMenuItem = compose<'button', ToolbarMenuItemProps, ToolbarMenuItemS
 
     slots: {
       icon: ToolbarMenuItemIcon,
+      // menu: ToolbarMenu,
     },
 
     handledProps: [

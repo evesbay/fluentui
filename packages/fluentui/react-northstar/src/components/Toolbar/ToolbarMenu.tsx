@@ -142,13 +142,13 @@ const ToolbarMenu = compose<'ul', ToolbarMenuProps, ToolbarMenuStylesProps, {}, 
             return ToolbarMenuRadioGroup.create(item, { overrideProps: handleRadioGroupOverrides });
 
           case 'toggle':
-            return createShorthand(composeOptions.slots.item, item, {
+            return createShorthand(composeOptions.slots.item || ToolbarMenuItem, item, {
               defaultProps: () => ({ accessibility: toolbarMenuItemCheckboxBehavior }),
               overrideProps: handleItemOverrides,
             });
 
           default:
-            return createShorthand(composeOptions.slots.item, item, {
+            return createShorthand(composeOptions.slots.item || ToolbarMenuItem, item, {
               defaultProps: () => ({
                 submenuIndicator,
                 inSubmenu: submenu,
@@ -193,7 +193,7 @@ const ToolbarMenu = compose<'ul', ToolbarMenuProps, ToolbarMenuStylesProps, {}, 
     ],
     slots: {
       divider: ToolbarMenuDivider,
-      item: ToolbarMenuItem,
+      // item: ToolbarMenuItem,
     },
   },
 ) as ComponentWithAs<'ul', ToolbarMenuProps> & {
