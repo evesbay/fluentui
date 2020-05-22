@@ -1,7 +1,6 @@
 import { Accessibility, toolbarItemBehavior, ToolbarItemBehaviorProps } from '@fluentui/accessibility';
 import {
   compose,
-  ComponentWithAs,
   getElementType,
   useUnhandledProps,
   useAccessibility,
@@ -22,15 +21,12 @@ import { ThemeContext } from 'react-fela';
 
 import {
   createShorthand,
-  createShorthandFactory,
   doesNodeContainClick,
   UIComponentProps,
   ChildrenComponentProps,
   ContentComponentProps,
   commonPropTypes,
   childrenExist,
-  ShorthandFactory,
-  ShorthandConfig,
 } from '../../utils';
 import { ComponentEventHandler, ShorthandValue, ShorthandCollection, ProviderContextPrepared } from '../../types';
 import { getPopperPropsFromShorthand, Popper, PopperShorthandProps } from '../../utils/positioner';
@@ -379,6 +375,7 @@ const ToolbarItem = compose<'button', ToolbarItemProps, ToolbarItemStylesProps, 
     slots: {
       menu: ToolbarMenu,
     },
+    shorthandConfig: { mappedProp: 'content' },
     handledProps: [
       'accessibility',
       'as',
@@ -402,10 +399,7 @@ const ToolbarItem = compose<'button', ToolbarItemProps, ToolbarItemStylesProps, 
       'wrapper',
     ],
   },
-) as ComponentWithAs<'button', ToolbarItemProps> & {
-  create: ShorthandFactory<ToolbarItemProps>;
-  shorthandConfig: ShorthandConfig<ToolbarItemProps>;
-};
+);
 
 ToolbarItem.propTypes = {
   ...commonPropTypes.createCommon(),
@@ -436,8 +430,5 @@ ToolbarItem.defaultProps = {
   accessibility: toolbarItemBehavior,
   wrapper: {},
 };
-
-ToolbarItem.create = createShorthandFactory({ Component: ToolbarItem, mappedProp: 'content' });
-ToolbarItem.shorthandConfig = { mappedProp: 'content' };
 
 export default ToolbarItem;

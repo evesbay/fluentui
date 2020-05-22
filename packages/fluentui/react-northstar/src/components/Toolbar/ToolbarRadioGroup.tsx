@@ -6,7 +6,6 @@ import {
 } from '@fluentui/accessibility';
 import {
   compose,
-  ComponentWithAs,
   getElementType,
   useUnhandledProps,
   useAccessibility,
@@ -25,15 +24,13 @@ import { ThemeContext } from 'react-fela';
 import {
   ChildrenComponentProps,
   ContentComponentProps,
-  createShorthandFactory,
+  createShorthand,
   UIComponentProps,
   childrenExist,
   commonPropTypes,
-  ShorthandFactory,
-  ShorthandConfig,
 } from '../../utils';
 import { ProviderContextPrepared, ShorthandCollection } from '../../types';
-import ToolbarDivider from './ToolbarDivider';
+import ToolbarDivider, { ToolbarDividerProps } from './ToolbarDivider';
 import ToolbarItem, { ToolbarItemProps } from './ToolbarItem';
 import { ToolbarVariablesContext, ToolbarVariablesProvider } from './toolbarVariablesContext';
 
@@ -137,7 +134,7 @@ const ToolbarRadioGroup = compose<'div', ToolbarRadioGroupProps, ToolbarRadioGro
           return ToolbarDivider.create(item);
         }
 
-        const toolbarItem = ToolbarItem.create(item, {
+        const toolbarItem = createShorthand(ToolbarItem, item, {
           defaultProps: () => ({
             accessibility: toolbarRadioGroupItemBehavior,
             active: activeIndex === index,

@@ -6,22 +6,13 @@ import {
   useStyles,
   useTelemetry,
   compose,
-  ComponentWithAs,
 } from '@fluentui/react-bindings';
 import { mergeComponentVariables } from '@fluentui/styles';
 import * as React from 'react';
 // @ts-ignore
 import { ThemeContext } from 'react-fela';
 
-import {
-  ChildrenComponentProps,
-  ContentComponentProps,
-  createShorthandFactory,
-  UIComponentProps,
-  commonPropTypes,
-  ShorthandFactory,
-  ShorthandConfig,
-} from '../../utils';
+import { ChildrenComponentProps, ContentComponentProps, UIComponentProps, commonPropTypes } from '../../utils';
 import { ProviderContextPrepared } from '../../types';
 import { ToolbarVariablesContext } from './toolbarVariablesContext';
 
@@ -75,24 +66,15 @@ const ToolbarMenuDivider = compose<'li', ToolbarMenuDividerProps, ToolbarMenuDiv
   {
     className: toolbarMenuDividerClassName,
     displayName: 'ToolbarMenuDivider',
+
+    shorthandConfig: { mappedProp: 'content' },
     handledProps: ['accessibility', 'as', 'children', 'className', 'content', 'design', 'styles', 'variables'],
   },
-) as ComponentWithAs<'li', ToolbarMenuDividerProps> & {
-  create: ShorthandFactory<ToolbarMenuDividerProps>;
-  shorthandConfig: ShorthandConfig<ToolbarMenuDividerProps>;
-};
+);
 
 ToolbarMenuDivider.propTypes = commonPropTypes.createCommon();
 ToolbarMenuDivider.defaultProps = {
   as: 'li',
-};
-
-ToolbarMenuDivider.create = createShorthandFactory({
-  Component: ToolbarMenuDivider,
-  mappedProp: 'content',
-});
-ToolbarMenuDivider.shorthandConfig = {
-  mappedProp: 'content',
 };
 
 export default ToolbarMenuDivider;

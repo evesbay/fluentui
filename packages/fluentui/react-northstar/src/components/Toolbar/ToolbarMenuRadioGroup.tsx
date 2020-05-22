@@ -7,7 +7,6 @@ import {
 import { mergeComponentVariables } from '@fluentui/styles';
 import {
   compose,
-  ComponentWithAs,
   getElementType,
   useUnhandledProps,
   useAccessibility,
@@ -21,15 +20,7 @@ import * as React from 'react';
 // @ts-ignore
 import { ThemeContext } from 'react-fela';
 
-import {
-  ChildrenComponentProps,
-  ContentComponentProps,
-  createShorthandFactory,
-  UIComponentProps,
-  commonPropTypes,
-  ShorthandFactory,
-  ShorthandConfig,
-} from '../../utils';
+import { ChildrenComponentProps, ContentComponentProps, UIComponentProps, commonPropTypes } from '../../utils';
 import { ComponentEventHandler, ProviderContextPrepared, ShorthandCollection, ShorthandValue } from '../../types';
 import ToolbarMenuItem, { ToolbarMenuItemProps } from './ToolbarMenuItem';
 import Box, { BoxProps } from '../Box/Box';
@@ -165,10 +156,7 @@ const ToolbarMenuRadioGroup = compose<'ul', ToolbarMenuRadioGroupProps, ToolbarM
       'wrapper',
     ],
   },
-) as ComponentWithAs<'ul', ToolbarMenuRadioGroupProps> & {
-  create: ShorthandFactory<ToolbarMenuRadioGroupProps>;
-  shorthandConfig: ShorthandConfig<ToolbarMenuRadioGroupProps>;
-};
+);
 
 ToolbarMenuRadioGroup.propTypes = {
   ...commonPropTypes.createCommon(),
@@ -182,8 +170,5 @@ ToolbarMenuRadioGroup.defaultProps = {
   accessibility: toolbarMenuRadioGroupBehavior,
   wrapper: {},
 };
-
-ToolbarMenuRadioGroup.create = createShorthandFactory({ Component: ToolbarMenuRadioGroup });
-ToolbarMenuRadioGroup.shorthandConfig = {};
 
 export default ToolbarMenuRadioGroup;

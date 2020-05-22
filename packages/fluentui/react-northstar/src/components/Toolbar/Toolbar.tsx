@@ -29,14 +29,11 @@ import { ComponentEventHandler, ProviderContextPrepared, ShorthandCollection, Sh
 import {
   childrenExist,
   createShorthand,
-  createShorthandFactory,
   UIComponentProps,
   ContentComponentProps,
   ChildrenComponentProps,
   commonPropTypes,
   ColorComponentProps,
-  ShorthandFactory,
-  ShorthandConfig,
 } from '../../utils';
 import ToolbarCustomItem, { ToolbarCustomItemProps } from './ToolbarCustomItem';
 import ToolbarDivider, { ToolbarDividerProps } from './ToolbarDivider';
@@ -464,7 +461,7 @@ const Toolbar = compose<'div', ToolbarProps, ToolbarStylesProps, {}, {}>(
     const renderOverflowItem = overflowItem => {
       return (
         <Ref innerRef={overflowItemRef}>
-          {ToolbarItem.create(overflowItem, {
+          {createShorthand(ToolbarItem, overflowItem, {
             defaultProps: () => ({
               icon: <MoreIcon outline />,
             }),

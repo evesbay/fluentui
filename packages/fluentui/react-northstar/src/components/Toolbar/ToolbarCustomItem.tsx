@@ -6,7 +6,6 @@ import {
   useAccessibility,
   useStyles,
   useTelemetry,
-  ComponentWithAs,
 } from '@fluentui/react-bindings';
 import { mergeComponentVariables } from '@fluentui/styles';
 import * as _ from 'lodash';
@@ -19,12 +18,9 @@ import { ComponentEventHandler, ProviderContextPrepared } from '../../types';
 import {
   ChildrenComponentProps,
   ContentComponentProps,
-  createShorthandFactory,
   UIComponentProps,
   childrenExist,
   commonPropTypes,
-  ShorthandFactory,
-  ShorthandConfig,
 } from '../../utils';
 import { ToolbarVariablesContext } from './toolbarVariablesContext';
 
@@ -127,6 +123,8 @@ const ToolbarCustomItem = compose<'div', ToolbarCustomItemProps, ToolbarCustomIt
   {
     className: toolbarCustomItemClassName,
     displayName: 'ToolbarCustomItem',
+
+    shorthandConfig: { mappedProp: 'content' },
     handledProps: [
       'accessibility',
       'as',
@@ -142,12 +140,7 @@ const ToolbarCustomItem = compose<'div', ToolbarCustomItemProps, ToolbarCustomIt
       'variables',
     ],
   },
-) as ComponentWithAs<'div', ToolbarCustomItemProps> & {
-  create: ShorthandFactory<ToolbarCustomItemProps>;
-  shorthandConfig: ShorthandConfig<ToolbarCustomItemProps>;
-};
-
-ToolbarCustomItem.displayName = 'ToolbarCustomItem';
+);
 
 ToolbarCustomItem.propTypes = {
   ...commonPropTypes.createCommon(),
@@ -159,12 +152,6 @@ ToolbarCustomItem.propTypes = {
   onFocus: PropTypes.func,
   onBlur: PropTypes.func,
 };
-
-ToolbarCustomItem.create = createShorthandFactory({
-  Component: ToolbarCustomItem,
-  mappedProp: 'content',
-});
-ToolbarCustomItem.shorthandConfig = { mappedProp: 'content' };
 
 /**
  * A ToolbarCustomItem renders Toolbar item as a non-actionable `div` with custom content inside.

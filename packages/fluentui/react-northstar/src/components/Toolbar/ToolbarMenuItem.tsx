@@ -14,7 +14,6 @@ import { Ref } from '@fluentui/react-component-ref';
 import * as customPropTypes from '@fluentui/react-proptypes';
 import {
   compose,
-  ComponentWithAs,
   focusAsync,
   useTelemetry,
   useStyles,
@@ -34,11 +33,8 @@ import {
   commonPropTypes,
   ContentComponentProps,
   UIComponentProps,
-  createShorthandFactory,
   childrenExist,
   doesNodeContainClick,
-  ShorthandFactory,
-  ShorthandConfig,
 } from '../../utils';
 import { ComponentEventHandler, ShorthandValue, ShorthandCollection, ProviderContextPrepared } from '../../types';
 import { getPopperPropsFromShorthand, Popper, PopperShorthandProps } from '../../utils/positioner';
@@ -451,6 +447,9 @@ const ToolbarMenuItem = compose<'button', ToolbarMenuItemProps, ToolbarMenuItemS
       // menu: ToolbarMenu,
     },
 
+    shorthandConfig: {
+      mappedProp: 'content',
+    },
     handledProps: [
       'accessibility',
       'as',
@@ -477,10 +476,7 @@ const ToolbarMenuItem = compose<'button', ToolbarMenuItemProps, ToolbarMenuItemS
       'wrapper',
     ],
   },
-) as ComponentWithAs<'button', ToolbarMenuItemProps> & {
-  create: ShorthandFactory<ToolbarMenuItemProps>;
-  shorthandConfig: ShorthandConfig<ToolbarMenuItemProps>;
-};
+);
 
 ToolbarMenuItem.propTypes = {
   ...commonPropTypes.createCommon(),
@@ -513,10 +509,5 @@ ToolbarMenuItem.defaultProps = {
   submenuIndicator: {},
   wrapper: { as: 'li' },
 };
-
-ToolbarMenuItem.create = createShorthandFactory({
-  Component: ToolbarMenuItem,
-  mappedProp: 'content',
-});
 
 export default ToolbarMenuItem;

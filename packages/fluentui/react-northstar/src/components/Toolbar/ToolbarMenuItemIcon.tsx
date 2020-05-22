@@ -1,6 +1,6 @@
-import { compose, ComponentWithAs } from '@fluentui/react-bindings';
+import { compose } from '@fluentui/react-bindings';
 
-import { commonPropTypes, ShorthandConfig } from '../../utils';
+import { commonPropTypes } from '../../utils';
 import Box, { BoxProps, BoxStylesProps } from '../Box/Box';
 
 interface ToolbarMenuItemIconOwnProps {}
@@ -23,19 +23,17 @@ const ToolbarMenuItemIcon = compose<
   displayName: 'ToolbarMenuItemIcon',
 
   mapPropsToStylesProps: props => ({
-    hasContent: !!(props as any).content /* TODO: compose should include parentProps */,
+    hasContent: props.content,
   }),
+  shorthandConfig: {
+    mappedProp: 'content',
+  },
   overrideStyles: true,
-}) as ComponentWithAs<'span', ToolbarMenuItemIconProps> & {
-  shorthandConfig: ShorthandConfig<ToolbarMenuItemIconProps>;
-};
+});
 
 ToolbarMenuItemIcon.defaultProps = {
   as: 'span',
 };
 ToolbarMenuItemIcon.propTypes = commonPropTypes.createCommon();
-ToolbarMenuItemIcon.shorthandConfig = {
-  mappedProp: 'content',
-};
 
 export default ToolbarMenuItemIcon;
