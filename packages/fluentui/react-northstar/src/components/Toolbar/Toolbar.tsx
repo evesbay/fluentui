@@ -38,17 +38,23 @@ import {
   ShorthandFactory,
   ShorthandConfig,
 } from '../../utils';
-import ToolbarCustomItem from './ToolbarCustomItem';
-import ToolbarDivider from './ToolbarDivider';
+import ToolbarCustomItem, { ToolbarCustomItemProps } from './ToolbarCustomItem';
+import ToolbarDivider, { ToolbarDividerProps } from './ToolbarDivider';
 import ToolbarItem, { ToolbarItemProps } from './ToolbarItem';
-import ToolbarMenu from './ToolbarMenu';
+import ToolbarMenu, { ToolbarMenuProps } from './ToolbarMenu';
 import ToolbarMenuDivider from './ToolbarMenuDivider';
-import ToolbarMenuItem, { ToolbarMenuItemProps } from './ToolbarMenuItem';
-import ToolbarMenuRadioGroup from './ToolbarMenuRadioGroup';
+import ToolbarMenuItem from './ToolbarMenuItem';
+import ToolbarMenuRadioGroup, { ToolbarMenuRadioGroupProps } from './ToolbarMenuRadioGroup';
 import ToolbarRadioGroup from './ToolbarRadioGroup';
 import { ToolbarVariablesProvider } from './toolbarVariablesContext';
 
-export type ToolbarItemShorthandKinds = 'divider' | 'item' | 'group' | 'toggle' | 'custom';
+export type ToolbarItemShorthandKinds = {
+  item: ToolbarItemProps;
+  divider: ToolbarDividerProps;
+  group: ToolbarMenuRadioGroupProps;
+  toggle: ToolbarItemProps;
+  custom: ToolbarCustomItemProps;
+};
 
 type PositionOffset = {
   vertical: number;
@@ -102,7 +108,7 @@ export interface ToolbarProps
    * Called when overflow menu is rendered opened.
    * @param startIndex - Index of the first item to be displayed in the overflow menu (the first item which does not fit the toolbar).
    */
-  getOverflowItems?: (startIndex: number) => ShorthandCollection<ToolbarMenuItemProps, ToolbarItemShorthandKinds>; // FIXME: use correct kind
+  getOverflowItems?: (startIndex: number) => ToolbarItemProps['menu'];
 }
 
 export type ToolbarStylesProps = never;
@@ -404,7 +410,7 @@ const Toolbar = compose<'div', ToolbarProps, ToolbarStylesProps, {}, {}>(
       _.invoke(props, 'onOverflow', lastVisibleItemIndex.current + 1);
     };
 
-    const collectOverflowItems = () => {
+    const collectOverflowItems = (): ToolbarItemProps['menu'] => {
       // console.log('getOverflowItems()', items.slice(lastVisibleItemIndex.current + 1))
       return getOverflowItems
         ? getOverflowItems(lastVisibleItemIndex.current + 1)
@@ -426,8 +432,8 @@ const Toolbar = compose<'div', ToolbarProps, ToolbarStylesProps, {}, {}>(
       }
     }, 16);
 
-    const renderItems = (items: ShorthandCollection<ToolbarItemProps, ToolbarItemShorthandKinds>) =>
-      _.map(items, (item: ShorthandValue<ToolbarItemProps & { kind?: ToolbarItemShorthandKinds }>) => {
+    const renderItems = (items: ToolbarProps['items']) =>
+      _.map(items, item => {
         const kind = _.get(item, 'kind', 'item');
 
         switch (kind) {
@@ -463,7 +469,10 @@ const Toolbar = compose<'div', ToolbarProps, ToolbarStylesProps, {}, {}>(
               icon: <MoreIcon outline />,
             }),
             overrideProps: {
-              menu: { items: overflowOpen ? collectOverflowItems() : [], popper: { positionFixed: true } },
+              menu: {
+                items: overflowOpen ? (collectOverflowItems() as ToolbarMenuProps['items']) : [],
+                popper: { positionFixed: true },
+              },
               menuOpen: overflowOpen,
               onMenuOpenChange: (e, { menuOpen }) => {
                 _.invoke(props, 'onOverflowOpenChange', e, { ...props, overflowOpen: menuOpen });
@@ -543,6 +552,7 @@ const Toolbar = compose<'div', ToolbarProps, ToolbarStylesProps, {}, {}>(
       item: ToolbarItem,
     },
 
+    shorthandConfig: { mappedProp: 'content' },
     handledProps: [
       'accessibility',
       'as',
@@ -562,9 +572,6 @@ const Toolbar = compose<'div', ToolbarProps, ToolbarStylesProps, {}, {}>(
     ],
   },
 ) as ComponentWithAs<'div', ToolbarProps> & {
-  create: ShorthandFactory<ToolbarProps>;
-  shorthandConfig: ShorthandConfig<ToolbarProps>;
-
   CustomItem: typeof ToolbarCustomItem;
   Divider: typeof ToolbarDivider;
   Item: typeof ToolbarItem;
@@ -599,8 +606,5 @@ Toolbar.MenuDivider = ToolbarMenuDivider;
 Toolbar.MenuItem = ToolbarMenuItem;
 Toolbar.MenuRadioGroup = ToolbarMenuRadioGroup;
 Toolbar.RadioGroup = ToolbarRadioGroup;
-
-Toolbar.create = createShorthandFactory({ Component: Toolbar, mappedProp: 'content' });
-Toolbar.shorthandConfig = { mappedProp: 'content' };
 
 export default Toolbar;

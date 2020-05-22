@@ -37,7 +37,10 @@ import ToolbarDivider from './ToolbarDivider';
 import ToolbarItem, { ToolbarItemProps } from './ToolbarItem';
 import { ToolbarVariablesContext, ToolbarVariablesProvider } from './toolbarVariablesContext';
 
-export type ToolbarRadioGroupItemShorthandKinds = 'divider' | 'item';
+export type ToolbarRadioGroupItemShorthandKinds = {
+  divider: ToolbarDividerProps;
+  item: ToolbarItemProps;
+};
 
 export interface ToolbarRadioGroupProps extends UIComponentProps, ChildrenComponentProps, ContentComponentProps {
   /**
@@ -173,6 +176,7 @@ const ToolbarRadioGroup = compose<'div', ToolbarRadioGroupProps, ToolbarRadioGro
     className: toolbarRadioGroupClassName,
     displayName: 'ToolbarRadioGroup',
 
+    shorthandConfig: { mappedProp: 'content' },
     handledProps: [
       'accessibility',
       'as',
@@ -187,10 +191,7 @@ const ToolbarRadioGroup = compose<'div', ToolbarRadioGroupProps, ToolbarRadioGro
       'items',
     ],
   },
-) as ComponentWithAs<'div', ToolbarRadioGroupProps> & {
-  create: ShorthandFactory<ToolbarRadioGroupProps>;
-  shorthandConfig: ShorthandConfig<ToolbarRadioGroupProps>;
-};
+);
 
 ToolbarRadioGroup.propTypes = {
   ...commonPropTypes.createCommon(),
@@ -200,11 +201,5 @@ ToolbarRadioGroup.propTypes = {
 ToolbarRadioGroup.defaultProps = {
   accessibility: toolbarRadioGroupBehavior,
 };
-
-ToolbarRadioGroup.create = createShorthandFactory({
-  Component: ToolbarRadioGroup,
-  mappedProp: 'content',
-});
-ToolbarRadioGroup.shorthandConfig = { mappedProp: 'content' };
 
 export default ToolbarRadioGroup;
